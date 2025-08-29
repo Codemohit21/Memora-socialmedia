@@ -1,0 +1,17 @@
+<svg width="320" height="90" viewBox="0 0 320 90" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="oceanBlueGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#2E86C1;" />
+      <stop offset="100%" style="stop-color:#85C1E9;" />
+    </linearGradient>
+  </defs>
+
+  <g transform="translate(0, 5)"> 
+    <path d="M 25,50 C 25,25 40,25 40,25 S 55,25 55,50 C 55,70 40,45 40,45 C 40,45 25,70 25,50 Z M 50,50 C 50,25 65,25 65,25 S 80,25 80,50" 
+          fill="none" stroke="url(#oceanBlueGradient)" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+  </g>
+
+  <text x="100" y="60" font-family="'Brush Script MT', 'cursive'" font-size="70" fill="#1B4F72">
+    memora
+  </text>
+</svg>
