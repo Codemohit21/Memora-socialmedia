@@ -184,38 +184,48 @@ const RecentMessages = () => {
           <Link
   to={`/messages/${message.from_user_id._id}`}
   key={index}
-  className={`flex items-center gap-4 py-3 px-4 rounded-2xl shadow-md
-  bg-gradient-to-r from-[#9370DB] via-[#8A2BE2] to-[#6A0DAD]
-  hover:scale-105 hover:shadow-lg transition-transform duration-200 w-full`}
-
-
+  className={`flex gap-4 p-3 rounded-2xl shadow-md
+    bg-gradient-to-r from-[#9370DB] via-[#8A2BE2] to-[#6A0DAD]
+    hover:scale-105 hover:shadow-lg transition-transform duration-200 w-full`}
 >
+  {/* Avatar */}
   <img
     src={message.from_user_id.profile_picture}
     alt="Profile"
     className="w-12 h-12 rounded-full shadow-md flex-shrink-0"
   />
+
+  {/* Text content */}
   <div className="flex flex-col w-full min-w-0">
-    <div className="flex justify-between items-center">
-      <p className="font-medium text-white truncate">
+    {/* Name and timestamp */}
+    <div className="flex justify-between items-center mb-1">
+      <p className="font-semibold text-white text-sm truncate">
         {message.from_user_id.full_name}
       </p>
-      <p className="text-xs text-gray-100 ml-2">
-        {moment(message.createdAt).fromNow()}
-      </p>
+      <p className="text-xs text-gray-200 ml-2">{moment(message.createdAt).fromNow()}</p>
     </div>
-    <div className="flex justify-between items-center mt-1">
-      <p className="text-gray-100 truncate max-w-full">
-        {message.text ? message.text : "Media"}
-      </p>
-      {!message.seen && (
-        <p className="bg-indigo-500 text-white w-5 h-5 flex items-center justify-center rounded-full text-[10px] font-semibold">
+
+    {/* Message bubble */}
+    <div className={`p-2 rounded-lg max-w-full
+      ${!message.seen ? "bg-yellow-100 text-gray-900 font-medium" : "bg-purple-200 text-gray-800"}
+      shadow-sm`}
+    >
+      {message.text ? message.text : "Media"}
+    </div>
+
+    {/* Unseen badge */}
+    {!message.seen && (
+      <div className="mt-1 w-fit">
+        <span className="bg-indigo-500 text-white w-5 h-5 flex items-center justify-center rounded-full text-[10px] font-semibold">
           1
-        </p>
-      )}
-    </div>
+        </span>
+      </div>
+    )}
   </div>
 </Link>
+
+
+
 
         ))}
       </div>

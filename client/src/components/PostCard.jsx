@@ -121,8 +121,134 @@
 // };
 
 // export default PostCard;
+// import { BadgeCheck, Heart, MessageCircle, Share2 } from "lucide-react";
+// import React from "react";
+// import moment from "moment";
+// import { useSelector } from "react-redux";
+// import { useNavigate } from "react-router-dom";
+// import api from "../api/axios";
+// import { useAuth } from "@clerk/clerk-react";
+// import toast from "react-hot-toast";
+
+// export const PostCard = ({ post }) => {
+//   const postWithHashtags = post.content.replace(
+//     /#(\w+)/g,
+//     '<span class="text-indigo-600 font-semibold">#$1</span>'
+//   );
+
+//   const [likes, setLikes] = React.useState(post.likes_count || []);
+//   const currentUser = useSelector((state) => state.user.value);
+//   const { getToken } = useAuth();
+//   const navigate = useNavigate();
+
+//   const handleLike = async () => {
+//     try {
+//       const { data } = await api.post(
+//         `/api/post/like`,
+//         { postId: post._id },
+//         { headers: { Authorization: `Bearer ${await getToken()}` } }
+//       );
+
+//       if (data.success) {
+//         toast.success(data.message);
+//         setLikes((prev) => {
+//           if (prev.includes(currentUser._id)) {
+//             return prev.filter((id) => id !== currentUser._id);
+//           } else {
+//             return [...prev, currentUser._id];
+//           }
+//         });
+//       } else {
+//         toast(data.message);
+//       }
+//     } catch (error) {
+//       toast.error(error.message);
+//     }
+//   };
+
+//   return (
+//     <div className="bg-gradient-to-r from-[#f7f7f7] via-[#e0e0e0] to-[#d9d9d9]
+//                 rounded-2xl shadow-md p-4 space-y-4 w-full max-w-2xl
+//                 transform transition-all duration-300 hover:scale-[1.02] hover:shadow-lg">
+
+//       {/* User Info */}
+//       <div
+//         onClick={() => navigate("/profile/" + post.user._id)}
+//         className="inline-flex items-center gap-3 cursor-pointer"
+//       >
+//         <img
+//           src={post.user.profile_picture}
+//           alt=""
+//           className="w-10 h-10 rounded-full shadow"
+//         />
+//         <div>
+//           <div className="flex items-center space-x-1 text-gray-800">
+//             <span className="font-semibold">{post.user.full_name}</span>
+//             <BadgeCheck className="w-4 h-4 text-blue-500" />
+//           </div>
+//           <div className="text-gray-600 text-sm">@{post.user.username}</div>
+//           <div className="text-gray-500 text-xs">{moment(post.createdAt).fromNow()}</div>
+//         </div>
+//       </div>
+
+//       {/* Post Content */}
+//       {post.content && (
+//         <div
+//           className="text-gray-800 text-sm whitespace-pre-line"
+//           dangerouslySetInnerHTML={{ __html: postWithHashtags }}
+//         />
+//       )}
+
+//       {/* Images */}
+// {post.image_urls.length > 0 && (
+//   <div className="relative w-full">
+//     {post.image_urls.length === 1 ? (
+//       <img
+//         src={post.image_urls[0]}
+//         className="w-full h-auto rounded-lg object-contain"
+//         alt=""
+//       />
+//     ) : (
+//       <div className="flex overflow-x-auto gap-2 snap-x snap-mandatory scrollbar-hide">
+//         {post.image_urls.map((img, index) => (
+//           <img
+//             key={index}
+//             src={img}
+//             className="w-full max-w-full flex-shrink-0 rounded-lg object-contain snap-center"
+//             alt=""
+//           />
+//         ))}
+//       </div>
+//     )}
+//   </div>
+// )}
+
+
+//       {/* Actions */}
+//       <div className="flex items-center gap-4 text-gray-700 text-sm pt-2 border-t border-gray-300">
+//         <div className="flex items-center gap-1 cursor-pointer transition-colors duration-300 hover:text-red-500">
+//           <Heart
+//             className={`w-5 h-5 ${likes.includes(currentUser._id) ? "text-red-500 fill-red-500" : "text-gray-700"}`}
+//             onClick={handleLike}
+//           />
+//           <span>{likes.length}</span>
+//         </div>
+//         <div className="flex items-center gap-1 cursor-pointer transition-colors duration-300 hover:text-indigo-600">
+//           <MessageCircle className="w-5 h-5" />
+//           <span>{post.comments || 0}</span>
+//         </div>
+//         <div className="flex items-center gap-1 cursor-pointer transition-colors duration-300 hover:text-teal-500">
+//           <Share2 className="w-5 h-5" />
+//           <span>{post.shares || 0}</span>
+//         </div>
+//       </div>
+//     </div>
+//   );
+// };
+
+// export default PostCard;
 import { BadgeCheck, Heart, MessageCircle, Share2 } from "lucide-react";
-import React from "react";
+import React, { useState } from "react";
 import moment from "moment";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
@@ -130,13 +256,14 @@ import api from "../api/axios";
 import { useAuth } from "@clerk/clerk-react";
 import toast from "react-hot-toast";
 
-export const PostCard = ({ post }) => {
+const PostCard = ({ post }) => {
   const postWithHashtags = post.content.replace(
     /#(\w+)/g,
     '<span class="text-indigo-600 font-semibold">#$1</span>'
   );
 
   const [likes, setLikes] = React.useState(post.likes_count || []);
+  const [currentSlide, setCurrentSlide] = useState(0);
   const currentUser = useSelector((state) => state.user.value);
   const { getToken } = useAuth();
   const navigate = useNavigate();
@@ -151,13 +278,11 @@ export const PostCard = ({ post }) => {
 
       if (data.success) {
         toast.success(data.message);
-        setLikes((prev) => {
-          if (prev.includes(currentUser._id)) {
-            return prev.filter((id) => id !== currentUser._id);
-          } else {
-            return [...prev, currentUser._id];
-          }
-        });
+        setLikes((prev) =>
+          prev.includes(currentUser._id)
+            ? prev.filter((id) => id !== currentUser._id)
+            : [...prev, currentUser._id]
+        );
       } else {
         toast(data.message);
       }
@@ -167,10 +292,11 @@ export const PostCard = ({ post }) => {
   };
 
   return (
-    <div className="bg-gradient-to-r from-[#f7f7f7] via-[#e0e0e0] to-[#d9d9d9]
+    <div
+      className="bg-gradient-to-r from-[#f7f7f7] via-[#e0e0e0] to-[#d9d9d9]
                 rounded-2xl shadow-md p-4 space-y-4 w-full max-w-2xl
-                transform transition-all duration-300 hover:scale-[1.02] hover:shadow-lg">
-
+                transform transition-all duration-300 hover:scale-[1.02] hover:shadow-lg"
+    >
       {/* User Info */}
       <div
         onClick={() => navigate("/profile/" + post.user._id)}
@@ -187,7 +313,9 @@ export const PostCard = ({ post }) => {
             <BadgeCheck className="w-4 h-4 text-blue-500" />
           </div>
           <div className="text-gray-600 text-sm">@{post.user.username}</div>
-          <div className="text-gray-500 text-xs">{moment(post.createdAt).fromNow()}</div>
+          <div className="text-gray-500 text-xs">
+            {moment(post.createdAt).fromNow()}
+          </div>
         </div>
       </div>
 
@@ -199,25 +327,55 @@ export const PostCard = ({ post }) => {
         />
       )}
 
-      {/* Images */}
-      {post.image_urls.length > 0 && (
-        <div className="grid grid-cols-2 gap-2">
-          {post.image_urls.map((img, index) => (
-            <img
-              src={img}
-              key={index}
-              className={`w-full object-cover rounded-lg ${post.image_urls.length === 1 ? "col-span-2 h-auto" : "h-48"}`}
-              alt=""
-            />
-          ))}
+   {/* Images */}
+{post.image_urls.length > 0 && (
+  <div className="relative w-full">
+    {post.image_urls.length === 1 ? (
+      <img
+        src={post.image_urls[0]}
+        className="w-full h-auto rounded-lg object-contain"
+        alt=""
+      />
+    ) : (
+      <div className="relative">
+        {/* Slide Counter */}
+        <div className="absolute top-2 right-2 bg-black/50 text-white text-xs px-2 py-1 rounded-lg z-10">
+          {`${currentSlide + 1}/${post.image_urls.length}`}
         </div>
-      )}
+
+        <div
+  className="flex overflow-x-auto gap-2 snap-x snap-mandatory scrollbar-subtle"
+  onScroll={(e) => {
+    const scrollLeft = e.target.scrollLeft;
+    const width = e.target.offsetWidth;
+    const index = Math.round(scrollLeft / width);
+    setCurrentSlide(index);
+  }}
+>
+  {post.image_urls.map((img, index) => (
+    <img
+      key={index}
+      src={img}
+      className="w-full max-w-full flex-shrink-0 rounded-lg object-contain snap-center"
+      alt=""
+    />
+  ))}
+</div>
+
+      </div>
+    )}
+  </div>
+)}
 
       {/* Actions */}
       <div className="flex items-center gap-4 text-gray-700 text-sm pt-2 border-t border-gray-300">
         <div className="flex items-center gap-1 cursor-pointer transition-colors duration-300 hover:text-red-500">
           <Heart
-            className={`w-5 h-5 ${likes.includes(currentUser._id) ? "text-red-500 fill-red-500" : "text-gray-700"}`}
+            className={`w-5 h-5 ${
+              likes.includes(currentUser._id)
+                ? "text-red-500 fill-red-500"
+                : "text-gray-700"
+            }`}
             onClick={handleLike}
           />
           <span>{likes.length}</span>

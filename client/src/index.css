@@ -9,3 +9,16 @@
 .no-scrollbar::-webkit-scrollbar {
   display: none;
 }
+/* For horizontal scroll containers */
+.scrollbar-subtle::-webkit-scrollbar {
+  height: 4px; /* small height */
+}
+
+.scrollbar-subtle::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.scrollbar-subtle::-webkit-scrollbar-thumb {
+  background-color: rgba(100, 100, 100, 0.4); /* subtle gray */
+  border-radius: 9999px;
+}

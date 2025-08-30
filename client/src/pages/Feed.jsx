@@ -122,17 +122,11 @@ const Feed = () => {
 
   const bgGradient = "bg-gradient-to-b from-[#fdfcfb] via-[#e2d1c3] to-[#c9d6ff]";
 
-  // Light golden gradients for connections
-  const gradients = [
-    "from-[#fff8e5] via-[#fff1c2] to-[#ffe9a8]",
-    "from-[#fff9eb] via-[#fff3c7] to-[#ffedaa]",
-    "from-[#fffbe6] via-[#fff5cd] to-[#fff0aa]",
-    "from-[#fff9e7] via-[#fff4c8] to-[#ffefab]",
-  ];
-
   return (
     <div className={`h-full overflow-y-scroll no-scrollbar py-10 xl:pr-5 flex items-start justify-center xl:gap-8 ${bgGradient}`}>
-      <div>
+      
+      {/* Middle Feed Column */}
+      <div className="flex-1 max-w-3xl">
         <StoriesBar />
         <div className="p-4 space-y-6">
           {loading
@@ -154,39 +148,40 @@ const Feed = () => {
 
       {/* Sidebar */}
       <div className="max-xl:hidden sticky top-0 flex flex-col gap-6 w-80">
+        
         {/* Recent Messages */}
         <RecentMessages />
 
         {/* Connections */}
-<div className="p-4 rounded-2xl shadow-lg
-  bg-gradient-to-b from-[#fff9e6] via-[#fff2c2] to-[#ffec99]
-  border border-yellow-200"
->
-  <h3 className="text-gray-800 font-semibold mb-4 text-lg">Connections</h3>
-  <div className="flex flex-col gap-3 max-h-80 overflow-y-auto no-scrollbar">
-    {connections.length === 0 && (
-      <p className="text-gray-500 text-sm">No connections yet</p>
-    )}
-    {connections.map((user) => (
-     <div
-  key={user._id}
-  onClick={() => navigate(`/profile/${user._id}`)}
-  className={`flex items-center gap-4 p-3 rounded-2xl shadow-md
-    bg-gradient-to-r from-[#E6E6FA] to-[#D8BFD8] hover:scale-105 hover:shadow-lg transition-transform duration-200 cursor-pointer w-full`}
->
-        <img
-          src={user.profile_picture}
-          alt={user.full_name}
-          className="w-12 h-12 rounded-full object-cover shadow-md flex-shrink-0"
-        />
-        <div className="flex flex-col min-w-0">
-          <p className="text-gray-900 font-medium truncate">{user.full_name}</p>
-          <p className="text-gray-600 text-sm truncate">@{user.username}</p>
+        <div className="p-4 rounded-2xl shadow-lg
+          bg-gradient-to-b from-[#fff9e6] via-[#fff2c2] to-[#ffec99]
+          border border-yellow-200"
+        >
+          <h3 className="text-gray-800 font-semibold mb-4 text-lg">Connections</h3>
+          <div className="flex flex-col gap-3 max-h-80 overflow-y-auto no-scrollbar">
+            {connections.length === 0 && (
+              <p className="text-gray-500 text-sm">No connections yet</p>
+            )}
+            {connections.map((user) => (
+              <div
+                key={user._id}
+                onClick={() => navigate(`/profile/${user._id}`)}
+                className={`flex items-center gap-4 p-3 rounded-2xl shadow-md
+                  bg-gradient-to-r from-[#E6E6FA] to-[#D8BFD8] hover:scale-105 hover:shadow-lg transition-transform duration-200 cursor-pointer w-full`}
+              >
+                <img
+                  src={user.profile_picture}
+                  alt={user.full_name}
+                  className="w-12 h-12 rounded-full object-cover shadow-md flex-shrink-0"
+                />
+                <div className="flex flex-col min-w-0">
+                  <p className="text-gray-900 font-medium truncate">{user.full_name}</p>
+                  <p className="text-gray-600 text-sm truncate">@{user.username}</p>
+                </div>
+              </div>
+            ))}
+          </div>
         </div>
-      </div>
-    ))}
-  </div>
-</div>
 
       </div>
     </div>
@@ -194,4 +189,3 @@ const Feed = () => {
 };
 
 export default Feed;
-

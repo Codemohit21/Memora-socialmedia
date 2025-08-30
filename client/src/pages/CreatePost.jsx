@@ -290,18 +290,22 @@ const CreatePost = () => {
             />
 
             <button
-              disabled={loading}
-              onClick={() =>
-                toast.promise(handleSubmit(), {
-                  loading: "Uploading...",
-                  success: "Post created successfully!",
-                  error: "Failed to create post",
-                })
-              }
-              className="text-sm bg-gradient-to-r from-[#7fd7d7] via-[#3bbfbf] to-[#2fa6a6] hover:from-[#3bbfbf] hover:to-[#2fa6a6] active:scale-95 transition text-white font-semibold px-8 py-2 rounded-2xl shadow-lg hover:shadow-xl"
-            >
-              Publish Post
-            </button>
+  disabled={loading}
+  onClick={() =>
+    toast.promise(handleSubmit(), {
+      loading: "Uploading...",
+      success: "Post created successfully!",
+      error: "Failed to create post",
+    })
+  }
+  className="text-sm bg-gradient-to-r from-[#7fd7d7] via-[#3bbfbf] to-[#2fa6a6]
+             hover:from-[#f59e0b] hover:via-[#f97316] hover:to-[#facc15]
+             hover:scale-105 active:scale-95 transition-all
+             text-white font-semibold px-8 py-2 rounded-2xl shadow-lg hover:shadow-xl"
+>
+  Publish Post
+</button>
+
           </div>
         </div>
       </div>
