@@ -5,7 +5,7 @@ const userSchema=mongoose.Schema({
     email:{type:String,required:true},
     full_name:{type:String,required:true},
     username:{type:String,unique:true},
-    bio:{type:String,default:'hey there! I am using Pingup.'},
+    bio:{type:String,default:'hey there! I am using Memora.'},
     profile_picture:{type:String,default:''},
     cover_photo:{type:String,default:''},
     location:{type:String,default:''},

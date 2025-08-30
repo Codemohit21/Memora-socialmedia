@@ -156,50 +156,67 @@ const RecentMessages = () => {
     return () => clearInterval(intervalId);
   }, [user, getToken]);
 
-  // Gradient options for variety
   const gradients = [
-    "from-[#fdfcfb] via-[#f5ebe0] to-[#ede7f6]",
-    "from-[#fff8f0] via-[#fbe6d6] to-[#e8e0f3]",
-    "from-[#fefcf7] via-[#f7e9dc] to-[#e4e1f5]",
-    "from-[#fdf9f3] via-[#f3e7d9] to-[#ece2f6]",
+    "from-[#fff8e5] via-[#fff1c2] to-[#ffe9a8]",
+    "from-[#fff9eb] via-[#fff3c7] to-[#ffedaa]",
+    "from-[#fffbe6] via-[#fff5cd] to-[#fff0aa]",
+    "from-[#fff9e7] via-[#fff4c8] to-[#ffefab]",
   ];
 
   return (
-    <div className="max-w-xs mt-4 p-4 min-h-20">
-      <h3 className="font-semibold text-gray-800 mb-4">Recent Messages</h3>
-      <div className="flex flex-col max-h-56 overflow-y-scroll no-scrollbar space-y-2">
+    <div
+      className="p-4 rounded-2xl shadow-lg
+        bg-gradient-to-b from-[#fff9e6] via-[#fff2c2] to-[#ffec99]
+        border border-yellow-200"
+    >
+      {/* Title */}
+      <h3 className="font-semibold text-gray-800 mb-3 text-lg text-center">
+        Recent Messages
+      </h3>
+
+      {/* Messages */}
+      <div className="flex flex-col max-h-80 overflow-y-auto no-scrollbar space-y-3">
+        {messages.length === 0 && (
+          <p className="text-gray-500 text-center">No recent messages</p>
+        )}
+
         {messages.map((message, index) => (
           <Link
-            to={`/messages/${message.from_user_id._id}`}
-            key={index}
-            className={`flex items-start gap-3 py-2 px-3 rounded-xl shadow-sm
-              bg-gradient-to-r ${gradients[index % gradients.length]} 
-              hover:scale-105 hover:shadow-md transition-transform duration-200`}
-          >
-            <img
-              src={message.from_user_id.profile_picture}
-              alt="Profile"
-              className="w-8 h-8 rounded-full shadow"
-            />
-            <div className="w-full">
-              <div className="flex justify-between items-center">
-                <p className="font-medium text-gray-800">{message.from_user_id.full_name}</p>
-                <p className="text-[10px] text-gray-400">
-                  {moment(message.createdAt).fromNow()}
-                </p>
-              </div>
-              <div className="flex justify-between items-center mt-0.5">
-                <p className="text-gray-600 truncate max-w-[150px]">
-                  {message.text ? message.text : "Media"}
-                </p>
-                {!message.seen && (
-                  <p className="bg-indigo-500 text-white w-5 h-5 flex items-center justify-center rounded-full text-[10px] font-semibold">
-                    1
-                  </p>
-                )}
-              </div>
-            </div>
-          </Link>
+  to={`/messages/${message.from_user_id._id}`}
+  key={index}
+  className={`flex items-center gap-4 py-3 px-4 rounded-2xl shadow-md
+  bg-gradient-to-r from-[#9370DB] via-[#8A2BE2] to-[#6A0DAD]
+  hover:scale-105 hover:shadow-lg transition-transform duration-200 w-full`}
+
+
+>
+  <img
+    src={message.from_user_id.profile_picture}
+    alt="Profile"
+    className="w-12 h-12 rounded-full shadow-md flex-shrink-0"
+  />
+  <div className="flex flex-col w-full min-w-0">
+    <div className="flex justify-between items-center">
+      <p className="font-medium text-white truncate">
+        {message.from_user_id.full_name}
+      </p>
+      <p className="text-xs text-gray-100 ml-2">
+        {moment(message.createdAt).fromNow()}
+      </p>
+    </div>
+    <div className="flex justify-between items-center mt-1">
+      <p className="text-gray-100 truncate max-w-full">
+        {message.text ? message.text : "Media"}
+      </p>
+      {!message.seen && (
+        <p className="bg-indigo-500 text-white w-5 h-5 flex items-center justify-center rounded-full text-[10px] font-semibold">
+          1
+        </p>
+      )}
+    </div>
+  </div>
+</Link>
+
         ))}
       </div>
     </div>

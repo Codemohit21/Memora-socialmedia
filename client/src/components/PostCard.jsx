@@ -167,9 +167,10 @@ export const PostCard = ({ post }) => {
   };
 
   return (
-    <div className="bg-gradient-to-r from-[#fdfcfb] via-[#f5ebe0] to-[#ede7f6]
-                    rounded-2xl shadow-md p-4 space-y-4 w-full max-w-2xl
-                    transform transition-all duration-300 hover:scale-[1.02] hover:shadow-lg">
+    <div className="bg-gradient-to-r from-[#f7f7f7] via-[#e0e0e0] to-[#d9d9d9]
+                rounded-2xl shadow-md p-4 space-y-4 w-full max-w-2xl
+                transform transition-all duration-300 hover:scale-[1.02] hover:shadow-lg">
+
       {/* User Info */}
       <div
         onClick={() => navigate("/profile/" + post.user._id)}

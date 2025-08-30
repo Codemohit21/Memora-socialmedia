@@ -179,7 +179,6 @@ const gradients = [
 
 const StoriesBar = () => {
   const { getToken } = useAuth();
-
   const [stories, setStories] = useState([]);
   const [showModal, setShowModal] = useState(false);
   const [viewStory, setViewStory] = useState();
@@ -205,21 +204,19 @@ const StoriesBar = () => {
   }, []);
 
   return (
-    <div className="w-screen sm:w-[calc(100vw-240px)] lg:max-w-2xl no-scrollbar overflow-x-auto px-4">
+    <div className="w-screen sm:w-[calc(100vw-240px)] lg:max-w-2xl no-scrollbar overflow-x-auto px-4 py-2">
       <div className="flex gap-4 pb-5">
         {/* Create Story Card */}
         <div
           onClick={() => setShowModal(true)}
-          className="rounded-2xl shadow-lg min-w-30 max-h-44 aspect-[3/4] cursor-pointer transition-all duration-300 hover:scale-105 border border-transparent hover:border-indigo-200 bg-gradient-to-b from-indigo-50 to-white"
+          className="rounded-3xl shadow-md min-w-[120px] max-h-44 aspect-[3/4] cursor-pointer transition-transform duration-300 hover:scale-105 border border-dashed border-indigo-300 bg-gradient-to-b from-indigo-50 to-white flex flex-col items-center justify-center p-4"
         >
-          <div className="h-full flex flex-col items-center justify-center p-4">
-            <div className="w-10 h-10 bg-indigo-500 rounded-full flex items-center justify-center mb-3">
-              <Plus className="w-5 h-5 text-white" />
-            </div>
-            <p className="text-sm font-medium text-gray-800 text-center">
-              Create Story
-            </p>
+          <div className="w-10 h-10 bg-indigo-500 rounded-full flex items-center justify-center mb-3 shadow-md">
+            <Plus className="w-5 h-5 text-white" />
           </div>
+          <p className="text-sm font-medium text-gray-800 text-center">
+            Create Story
+          </p>
         </div>
 
         {/* Story Cards */}
@@ -227,21 +224,21 @@ const StoriesBar = () => {
           <div
             onClick={() => setViewStory(story)}
             key={story.id || index}
-            className={`relative min-w-30 max-h-44 cursor-pointer rounded-2xl shadow-lg transition-all duration-300 hover:scale-105 border border-transparent hover:border-indigo-200 bg-gradient-to-b ${gradients[index % gradients.length]}`}
+            className={`relative min-w-[120px] max-h-44 cursor-pointer rounded-3xl shadow-md transition-transform duration-300 hover:scale-105 border border-transparent hover:border-indigo-300 bg-gradient-to-b ${gradients[index % gradients.length]}`}
           >
             {/* Media */}
             {story.media_type !== "text" && (
-              <div className="absolute inset-0 z-0 rounded-2xl overflow-hidden">
+              <div className="absolute inset-0 z-0 rounded-3xl overflow-hidden">
                 {story.media_type === "image" ? (
                   <img
                     src={story.media_url}
                     alt=""
-                    className="w-full h-full object-cover rounded-2xl hover:scale-105 transition duration-500 opacity-80 hover:opacity-90"
+                    className="w-full h-full object-cover rounded-3xl hover:scale-105 transition-transform duration-500 opacity-80 hover:opacity-90"
                   />
                 ) : (
                   <video
                     src={story.media_url}
-                    className="w-full h-full object-cover rounded-2xl hover:scale-105 transition duration-500 opacity-80 hover:opacity-90"
+                    className="w-full h-full object-cover rounded-3xl hover:scale-105 transition-transform duration-500 opacity-80 hover:opacity-90"
                     autoPlay
                     loop
                     muted
@@ -254,16 +251,16 @@ const StoriesBar = () => {
             <img
               src={story.user.profile_picture}
               alt={story.user.name}
-              className="absolute w-8 h-8 top-3 left-3 z-10 rounded-full ring ring-gray-100 shadow"
+              className="absolute w-8 h-8 top-3 left-3 z-10 rounded-full ring-2 ring-white shadow-sm"
             />
 
             {/* Story content */}
-            <p className="absolute top-16 left-3 text-gray-800/80 text-sm truncate max-w-24">
+            <p className="absolute top-16 left-3 text-gray-900/90 text-sm font-medium truncate max-w-24">
               {story.content}
             </p>
 
             {/* Timestamp */}
-            <p className="absolute bottom-1 right-2 z-10 text-gray-800 text-xs">
+            <p className="absolute bottom-1 right-2 z-10 text-gray-700 text-xs">
               {moment(story.createdAt).fromNow()}
             </p>
           </div>

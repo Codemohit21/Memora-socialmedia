@@ -86,11 +86,16 @@ import RecentMessages from "../components/RecentMessages";
 import { useAuth } from "@clerk/clerk-react";
 import api from "../api/axios";
 import toast from "react-hot-toast";
+import { useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 
 const Feed = () => {
   const [feeds, setFeeds] = useState([]);
   const [loading, setLoading] = useState(true);
   const { getToken } = useAuth();
+
+  const navigate = useNavigate();
+  const { connections } = useSelector((state) => state.connections);
 
   const fetchFeeds = async () => {
     try {
@@ -115,68 +120,74 @@ const Feed = () => {
     fetchFeeds();
   }, []);
 
-  // 🔹 Skeleton loader while fetching posts
-  if (loading) {
-    return (
-      <div className="h-full overflow-y-scroll no-scrollbar py-10 xl:pr-5 flex items-start justify-center xl:gap-8 bg-[#F4F4F6]">
-        <div>
-          <StoriesBar loading={true} />
-          <div className="p-4 space-y-6">
-            {[...Array(5)].map((_, i) => (
-              <div
-                key={i}
-                className="h-48 bg-gradient-to-r from-gray-100 to-gray-500 animate-pulse rounded-2xl shadow-sm"
-              ></div>
-            ))}
-          </div>
-        </div>
+  const bgGradient = "bg-gradient-to-b from-[#fdfcfb] via-[#e2d1c3] to-[#c9d6ff]";
 
-        <div className="max-xl:hidden sticky top-0">
-          {/* Sponsored Skeleton */}
-          <div className="max-w-xs bg-white p-4 rounded-2xl inline-flex flex-col gap-2 shadow-md">
-            <h3 className="text-[#1F2937] font-semibold">Sponsored</h3>
-            <div className="w-full h-48 bg-gray-300 animate-pulse rounded-xl"></div>
-            <p className="text-[#4B5563] animate-pulse h-3 w-3/4 bg-gray-200 rounded"></p>
-            <p className="text-[#6B7280] animate-pulse h-3 w-full bg-gray-200 rounded"></p>
-          </div>
-
-          <RecentMessages loading={true} />
-        </div>
-      </div>
-    );
-  }
+  // Light golden gradients for connections
+  const gradients = [
+    "from-[#fff8e5] via-[#fff1c2] to-[#ffe9a8]",
+    "from-[#fff9eb] via-[#fff3c7] to-[#ffedaa]",
+    "from-[#fffbe6] via-[#fff5cd] to-[#fff0aa]",
+    "from-[#fff9e7] via-[#fff4c8] to-[#ffefab]",
+  ];
 
   return (
-    <div className="h-full overflow-y-scroll no-scrollbar py-10 xl:pr-5 flex items-start justify-center xl:gap-8 bg-[#F4F4F6]">
+    <div className={`h-full overflow-y-scroll no-scrollbar py-10 xl:pr-5 flex items-start justify-center xl:gap-8 ${bgGradient}`}>
       <div>
         <StoriesBar />
         <div className="p-4 space-y-6">
-          {feeds.map((post) => (
-            <PostCard
-              key={post._id}
-              post={post}
-              className="bg-white rounded-2xl shadow-lg hover:shadow-xl transition-shadow duration-300"
-            />
-          ))}
+          {loading
+            ? [...Array(5)].map((_, i) => (
+                <div
+                  key={i}
+                  className="h-48 bg-gray-200/70 animate-pulse rounded-2xl shadow-lg"
+                ></div>
+              ))
+            : feeds.map((post) => (
+                <PostCard
+                  key={post._id}
+                  post={post}
+                  className="bg-white rounded-2xl shadow-lg hover:shadow-xl transition-shadow duration-300"
+                />
+              ))}
         </div>
       </div>
 
-      <div className="max-xl:hidden sticky top-0">
-        {/* Sponsored Section */}
-        <div className="max-w-xs bg-white p-4 rounded-2xl inline-flex flex-col gap-2 shadow-lg hover:shadow-xl transition-shadow">
-          <h3 className="text-[#1F2937] font-semibold">Sponsored</h3>
-          <img
-            src={assets.sponsored_img}
-            className="w-full h-48 object-cover rounded-xl"
-            alt="sponsored"
-          />
-          <p className="text-[#4B5563] font-medium">Premium Clothing Brand</p>
-          <p className="text-[#6B7280] text-sm leading-relaxed">
-            ShopEase is a MERN-based e-commerce platform with product browsing, cart, orders, admin panel, and voice navigation for easy accessibility.
-          </p>
-        </div>
-
+      {/* Sidebar */}
+      <div className="max-xl:hidden sticky top-0 flex flex-col gap-6 w-80">
+        {/* Recent Messages */}
         <RecentMessages />
+
+        {/* Connections */}
+<div className="p-4 rounded-2xl shadow-lg
+  bg-gradient-to-b from-[#fff9e6] via-[#fff2c2] to-[#ffec99]
+  border border-yellow-200"
+>
+  <h3 className="text-gray-800 font-semibold mb-4 text-lg">Connections</h3>
+  <div className="flex flex-col gap-3 max-h-80 overflow-y-auto no-scrollbar">
+    {connections.length === 0 && (
+      <p className="text-gray-500 text-sm">No connections yet</p>
+    )}
+    {connections.map((user) => (
+     <div
+  key={user._id}
+  onClick={() => navigate(`/profile/${user._id}`)}
+  className={`flex items-center gap-4 p-3 rounded-2xl shadow-md
+    bg-gradient-to-r from-[#E6E6FA] to-[#D8BFD8] hover:scale-105 hover:shadow-lg transition-transform duration-200 cursor-pointer w-full`}
+>
+        <img
+          src={user.profile_picture}
+          alt={user.full_name}
+          className="w-12 h-12 rounded-full object-cover shadow-md flex-shrink-0"
+        />
+        <div className="flex flex-col min-w-0">
+          <p className="text-gray-900 font-medium truncate">{user.full_name}</p>
+          <p className="text-gray-600 text-sm truncate">@{user.username}</p>
+        </div>
+      </div>
+    ))}
+  </div>
+</div>
+
       </div>
     </div>
   );
