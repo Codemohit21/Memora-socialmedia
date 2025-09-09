@@ -17,9 +17,9 @@
 import ImageKit from "imagekit";
 
 var imagekit = new ImageKit({
-    publicKey : "public_+8ZiurdqlAfYQG4R8G8T7mAimfE=",
-    privateKey : "private_0sav+7A6UTvG1hFy5JDFyZI0nOg=",
-    urlEndpoint : "https://ik.imagekit.io/xiwgtjkp4"
+    publicKey : "public_8oKIxgD8nnnYruuwNzhwdSUB8ZY=",
+    privateKey : "private_ulZtvUYw//Fgwya0oq2nkU3puuI=",
+    urlEndpoint : "https://ik.imagekit.io/gftoy6gio"
 });
 
 export default imagekit;
